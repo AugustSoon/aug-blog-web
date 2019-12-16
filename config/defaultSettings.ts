@@ -53,9 +53,9 @@ export default {
   fixSiderbar: false,
   colorWeak: false,
   menu: {
-    locale: true,
+    locale: false,
   },
-  title: 'Ant Design Pro',
+  title: 'Aug Blog',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;
