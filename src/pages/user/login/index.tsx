@@ -1,7 +1,6 @@
-import { Alert, Checkbox } from 'antd';
+import { Alert } from 'antd';
 import React, { Component } from 'react';
 
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { Dispatch, AnyAction } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
@@ -20,7 +19,6 @@ interface LoginProps {
 }
 interface LoginState {
   type: string;
-  autoLogin: boolean;
 }
 
 @connect(({ login, loading }: ConnectState) => ({
@@ -32,13 +30,6 @@ class Login extends Component<LoginProps, LoginState> {
 
   state: LoginState = {
     type: 'account',
-    autoLogin: true,
-  };
-
-  changeAutoLogin = (e: CheckboxChangeEvent) => {
-    this.setState({
-      autoLogin: e.target.checked,
-    });
   };
 
   handleSubmit = (err: unknown, values: LoginParamsType) => {
@@ -59,33 +50,6 @@ class Login extends Component<LoginProps, LoginState> {
     this.setState({ type });
   };
 
-  onGetCaptcha = () =>
-    new Promise<boolean>((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
-      }
-      this.loginForm.validateFields(
-        ['mobile'],
-        {},
-        async (err: unknown, values: LoginParamsType) => {
-          if (err) {
-            reject(err);
-          } else {
-            const { dispatch } = this.props;
-            try {
-              const success = await ((dispatch({
-                type: 'login/getCaptcha',
-                payload: values.mobile,
-              }) as unknown) as Promise<unknown>);
-              resolve(!!success);
-            } catch (error) {
-              reject(error);
-            }
-          }
-        },
-      );
-    });
-
   renderMessage = (content: string) => (
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
@@ -93,7 +57,7 @@ class Login extends Component<LoginProps, LoginState> {
   render() {
     const { userLogin, submitting } = this.props;
     const { status, type: loginType } = userLogin;
-    const { type, autoLogin } = this.state;
+    const { type } = this.state;
     return (
       <div className={styles.main}>
         <LoginComponents
@@ -136,11 +100,6 @@ class Login extends Component<LoginProps, LoginState> {
               }}
             />
           </Tab>
-          <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              自动登录
-            </Checkbox>
-          </div>
           <Submit loading={submitting}>登录</Submit>
         </LoginComponents>
       </div>
