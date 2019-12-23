@@ -30,3 +30,13 @@ export function setAuthority(authority: string | string[]): void {
   // auto reload
   reloadAuthorized();
 }
+
+// 保存token
+export function setToken(token: string): void {
+  localStorage.setItem('aug-blog-token', token);
+}
+
+// 获取token
+export function getToken(): string {
+  return localStorage.getItem('aug-blog-token') || '';
+}

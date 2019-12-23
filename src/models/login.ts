@@ -3,14 +3,14 @@ import { Effect } from 'dva';
 import { stringify } from 'querystring';
 import router from 'umi/router';
 
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
+import { accountLogin, getFakeCaptcha } from '@/services/login';
+import { setAuthority, setToken } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
 export interface StateType {
   status?: 'ok' | 'error';
   type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  message?: string;
 }
 
 export interface LoginModelType {
@@ -35,13 +35,13 @@ const Model: LoginModelType = {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(accountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: { ...response, type: payload.type },
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === 0) {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -66,6 +66,9 @@ const Model: LoginModelType = {
     },
 
     logout() {
+      // 删除token
+      setToken('');
+      // 跳转地址
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
@@ -81,11 +84,17 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      if (payload.data.currentAuthority) setAuthority(payload.data.currentAuthority);
+
+      const status = payload.code > 0 ? 'error' : 'ok';
+
+      if (status === 'ok' && payload.data.token) setToken(payload.data.token);
+
       return {
         ...state,
-        status: payload.status,
+        status,
         type: payload.type,
+        message: payload.message || '',
       };
     },
   },

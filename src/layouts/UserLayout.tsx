@@ -1,7 +1,6 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Icon } from 'antd';
 import { Helmet } from 'react-helmet';
-import Link from 'umi/link';
 import React from 'react';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
@@ -45,10 +44,8 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
-                <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Aug Blog</span>
-              </Link>
+              <img alt="logo" className={styles.logo} src={logo} />
+              <span className={styles.title}>Aug Blog</span>
             </div>
             <div className={styles.desc}></div>
           </div>

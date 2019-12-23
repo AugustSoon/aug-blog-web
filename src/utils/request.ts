@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import { getToken } from './authority';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -52,5 +53,27 @@ const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+// request拦截器, 改变url 或 options.
+request.interceptors.request.use((url, options) => {
+  const { headers } = options;
+
+  return {
+    url,
+    options: {
+      ...options,
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${getToken()}`,
+      },
+    },
+  };
+});
+
+// response拦截器, 处理response
+// request.interceptors.response.use((response, options) => {
+//   const contentType = response.headers.get('Content-Type');
+//   return response;
+// });
 
 export default request;

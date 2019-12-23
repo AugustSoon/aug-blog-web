@@ -56,7 +56,7 @@ class Login extends Component<LoginProps, LoginState> {
 
   render() {
     const { userLogin, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
+    const { status, type: loginType, message = '账号或密码错误' } = userLogin;
     const { type } = this.state;
     return (
       <div className={styles.main}>
@@ -72,14 +72,14 @@ class Login extends Component<LoginProps, LoginState> {
             {status === 'error' &&
               loginType === 'account' &&
               !submitting &&
-              this.renderMessage('账户或密码错误')}
+              this.renderMessage(message)}
             <UserName
               name="userName"
-              placeholder="用户名"
+              placeholder="账号"
               rules={[
                 {
                   required: true,
-                  message: '请输入用户名!',
+                  message: '请输入账号!',
                 },
               ]}
             />

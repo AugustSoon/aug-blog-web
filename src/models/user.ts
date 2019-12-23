@@ -59,10 +59,18 @@ const UserModel: UserModelType = {
   },
 
   reducers: {
-    saveCurrentUser(state, action) {
+    saveCurrentUser(state, { payload }) {
+      const currentUser =
+        payload.code > 0 || !payload.data
+          ? {}
+          : {
+              userid: payload.data.id,
+              name: payload.data.username,
+            };
+
       return {
         ...state,
-        currentUser: action.payload || {},
+        currentUser,
       };
     },
     changeNotifyCount(
