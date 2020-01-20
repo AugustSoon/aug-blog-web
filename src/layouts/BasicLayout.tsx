@@ -136,7 +136,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     <ProLayout
       logo={logo}
       menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
+        <Link to="/admin">
           {logoDom}
           {titleDom}
         </Link>
@@ -150,11 +150,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       }}
       breadcrumbRender={(routers = []) => [
         {
-          path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-            defaultMessage: 'Home',
-          }),
+          path: './',
+          breadcrumbName: '首页',
         },
         ...routers,
       ]}

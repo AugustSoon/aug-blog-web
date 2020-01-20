@@ -13,26 +13,26 @@ export default [
     ],
   },
   {
-    path: '/',
+    path: '/admin',
     component: '../layouts/SecurityLayout',
     routes: [
       {
-        path: '/',
+        path: '/admin',
         component: '../layouts/BasicLayout',
         routes: [
           {
-            path: '/',
-            redirect: '/welcome',
+            path: '/admin',
+            redirect: '/admin/welcome',
           },
           {
-            path: '/welcome',
-            name: 'welcome',
+            path: '/admin/welcome',
+            name: '欢迎',
             icon: 'smile',
             component: './Welcome',
           },
           {
-            path: '/admin',
-            name: 'admin',
+            path: '/admin/admins',
+            name: '管理员',
             icon: 'crown',
             component: './Admin',
           },

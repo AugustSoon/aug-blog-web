@@ -21,7 +21,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
 
   return (
     <div className={className}>
-      <Avatar menu />
+      <Avatar />
     </div>
   );
 };

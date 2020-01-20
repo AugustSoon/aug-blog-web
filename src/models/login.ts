@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 import { Effect } from 'dva';
-import { stringify } from 'querystring';
 import router from 'umi/router';
 
 import { accountLogin, getFakeCaptcha } from '@/services/login';
@@ -53,11 +52,11 @@ const Model: LoginModelType = {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
           } else {
-            window.location.href = '/';
+            window.location.href = '/admin';
             return;
           }
         }
-        router.replace(redirect || '/');
+        router.replace(redirect || '/admin');
       }
     },
 
@@ -74,9 +73,6 @@ const Model: LoginModelType = {
       if (window.location.pathname !== '/user/login' && !redirect) {
         router.replace({
           pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
         });
       }
     },
